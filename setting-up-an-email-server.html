@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+	<title>Setting up an Email Server – steven-webber</title>
+<meta name="robots" content="max-image-preview:large">
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="dns-prefetch" href="https://wordpress.com/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="alternate" type="application/rss+xml" title="steven-webber » Feed" href="https://stevenwebber705174622.wordpress.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="steven-webber » Comments Feed" href="https://stevenwebber705174622.wordpress.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="steven-webber » Setting up an Email&nbsp;Server Comments Feed" href="https://stevenwebber705174622.wordpress.com/2017/01/23/my-tech-journey/feed/">
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+			<script>
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s0.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1625065786h&ver=5.8-beta4-51252"}};
+			!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="steven-webber_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style>
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="all-css-0-1" href="steven-webber_files/a_002.css" type="text/css" media="all">
+<style id="wp-block-library-inline-css">
+.has-text-align-justify {
+	text-align:justify;
+}
+</style>
+<style id="global-styles-inline-css">
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--primary: #000000;--wp--preset--color--secondary: #007cba;--wp--preset--color--foreground: #333333;--wp--preset--color--tertiary: #FAFAFA;--wp--preset--color--background: #FFFFFF;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--gradient--hard-diagonal: linear-gradient(to bottom right, #1a1a1a 49.9%, #fafafa 50%);--wp--preset--gradient--hard-diagonal-inverted: linear-gradient(to top left, #1a1a1a 49.9%, #fafafa 50%);--wp--preset--gradient--hard-horizontal: linear-gradient(to bottom, #1a1a1a 50%, #fafafa 50%);--wp--preset--gradient--hard-horizontal-inverted: linear-gradient(to top, #1a1a1a 50%, #fafafa 50%);--wp--preset--gradient--diagonal: linear-gradient(to bottom right, #1a1a1a, #fafafa);--wp--preset--gradient--diagonal-inverted: linear-gradient(to top left, #1a1a1a, #fafafa);--wp--preset--gradient--horizontal: linear-gradient(to bottom, #1a1a1a, #fafafa);--wp--preset--gradient--horizontal-inverted: linear-gradient(to top, #1a1a1a, #fafafa);--wp--preset--gradient--stripe: linear-gradient(to bottom, transparent 20%, #1a1a1a 20%, #1a1a1a 80%, transparent 80%);--wp--preset--font-size--small: 16px;--wp--preset--font-size--normal: 18px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 24px;--wp--preset--font-size--huge: 28px;--wp--preset--font-size--tiny: 14px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-primary-color{color: var(--wp--preset--color--primary) !important;}.has-secondary-color{color: var(--wp--preset--color--secondary) !important;}.has-foreground-color{color: var(--wp--preset--color--foreground) !important;}.has-tertiary-color{color: var(--wp--preset--color--tertiary) !important;}.has-background-color{color: var(--wp--preset--color--background) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-primary-background-color{background-color: var(--wp--preset--color--primary) !important;}.has-secondary-background-color{background-color: var(--wp--preset--color--secondary) !important;}.has-foreground-background-color{background-color: var(--wp--preset--color--foreground) !important;}.has-tertiary-background-color{background-color: var(--wp--preset--color--tertiary) !important;}.has-background-background-color{background-color: var(--wp--preset--color--background) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-primary-border-color{border-color: var(--wp--preset--color--primary) !important;}.has-secondary-border-color{border-color: var(--wp--preset--color--secondary) !important;}.has-foreground-border-color{border-color: var(--wp--preset--color--foreground) !important;}.has-tertiary-border-color{border-color: var(--wp--preset--color--tertiary) !important;}.has-background-border-color{border-color: var(--wp--preset--color--background) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-hard-diagonal-gradient-background{background: var(--wp--preset--gradient--hard-diagonal) !important;}.has-hard-diagonal-inverted-gradient-background{background: var(--wp--preset--gradient--hard-diagonal-inverted) !important;}.has-hard-horizontal-gradient-background{background: var(--wp--preset--gradient--hard-horizontal) !important;}.has-hard-horizontal-inverted-gradient-background{background: var(--wp--preset--gradient--hard-horizontal-inverted) !important;}.has-diagonal-gradient-background{background: var(--wp--preset--gradient--diagonal) !important;}.has-diagonal-inverted-gradient-background{background: var(--wp--preset--gradient--diagonal-inverted) !important;}.has-horizontal-gradient-background{background: var(--wp--preset--gradient--horizontal) !important;}.has-horizontal-inverted-gradient-background{background: var(--wp--preset--gradient--horizontal-inverted) !important;}.has-stripe-gradient-background{background: var(--wp--preset--gradient--stripe) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-normal-font-size{font-size: var(--wp--preset--font-size--normal) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-huge-font-size{font-size: var(--wp--preset--font-size--huge) !important;}.has-tiny-font-size{font-size: var(--wp--preset--font-size--tiny) !important;}
+</style>
+<link rel="stylesheet" id="all-css-2-1" href="steven-webber_files/a_004.css" type="text/css" media="all">
+<link crossorigin="anonymous" rel="stylesheet" id="seedlet-fonts-css" href="steven-webber_files/css.css" media="all">
+<link rel="stylesheet" id="all-css-4-1" href="steven-webber_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="print-css-5-1" href="steven-webber_files/print.css" type="text/css" media="print">
+<link rel="stylesheet" id="all-css-6-1" href="steven-webber_files/a.css" type="text/css" media="all">
+<style id="jetpack-global-styles-frontend-style-inline-css">
+@import url('https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,bolditalic|Rubik:regular,bold,italic,bolditalic|');:root { --font-headings: Rubik; --font-base: Roboto; --font-headings-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif; --font-base-default: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;}
+</style>
+<link rel="stylesheet" id="all-css-8-1" href="steven-webber_files/a_003.css" type="text/css" media="all">
+<script id="wpcom-actionbar-placeholder-js-extra">
+var actionbardata = {"siteID":"195400661","siteName":"steven-webber","siteURL":"http:\/\/stevenwebber705174622.wordpress.com","icon":"<img alt='' src='https:\/\/s0.wp.com\/i\/logo\/wpcom-gray-white.png' class='avatar avatar-50' height='50' width='50' \/>","canManageOptions":"","canCustomizeSite":"","isFollowing":"","themeSlug":"pub\/blank-canvas","signupURL":"https:\/\/wordpress.com\/start\/","loginURL":"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fstevenwebber705174622.wordpress.com%2F2017%2F01%2F23%2Fmy-tech-journey%2F&signup_flow=account","themeURL":"https:\/\/wordpress.com\/theme\/blank-canvas\/","xhrURL":"https:\/\/stevenwebber705174622.wordpress.com\/wp-admin\/admin-ajax.php","nonce":"15101c467e","isSingular":"1","isFolded":"","isLoggedIn":"","isMobile":"","subscribeNonce":"<input type=\"hidden\" id=\"_wpnonce\" name=\"_wpnonce\" value=\"c96328c354\" \/>","referer":"https:\/\/stevenwebber705174622.wordpress.com\/2017\/01\/23\/my-tech-journey\/","canFollow":"1","feedID":"119661416","statusMessage":"","customizeLink":"https:\/\/stevenwebber705174622.wordpress.com\/wp-admin\/customize.php?url=https%3A%2F%2Fstevenwebber705174622.wordpress.com%2F2017%2F01%2F23%2Fmy-tech-journey%2F","postID":"17","shortlink":"https:\/\/wp.me\/pddSDz-h","canEditPost":"","editLink":"https:\/\/wordpress.com\/post\/stevenwebber705174622.wordpress.com\/17","statsLink":"https:\/\/wordpress.com\/stats\/post\/17\/stevenwebber705174622.wordpress.com","i18n":{"view":"View site","follow":"Follow","following":"Following","edit":"Edit","login":"Log in","signup":"Sign up","customize":"Customize","report":"Report this content","themeInfo":"Get theme: Blank Canvas","shortlink":"Copy shortlink","copied":"Copied","followedText":"New posts from this site will now appear in your <a href=\"https:\/\/wordpress.com\/read\">Reader<\/a>","foldBar":"Collapse this bar","unfoldBar":"Expand this bar","editSubs":"Manage subscriptions","viewReader":"View site in Reader","viewReadPost":"View post in Reader","subscribe":"Sign me up","enterEmail":"Enter your email address","followers":"","alreadyUser":"Already have a WordPress.com account? <a href=\"https:\/\/wordpress.com\/log-in?redirect_to=https%3A%2F%2Fstevenwebber705174622.wordpress.com%2F2017%2F01%2F23%2Fmy-tech-journey%2F&signup_flow=account\">Log in now.<\/a>","stats":"Stats"}};
+</script>
+<script crossorigin="anonymous" type="text/javascript" src="steven-webber_files/a_003"></script>
+<script type="text/javascript">
+	window.addEventListener( 'DOMContentLoaded', function() {
+		rltInitialize( {"token":null,"iframeOrigins":["https:\/\/widgets.wp.com"]} );
+	} );
+</script>
+<link rel="stylesheet" id="all-css-0-2" href="steven-webber_files/style_002.css" type="text/css" media="all">
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s0.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563h&#038;ver=20110606' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://stevenwebber705174622.wordpress.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s0.wp.com/wp-includes/wlwmanifest.xml">
+<meta name="generator" content="WordPress.com">
+<link rel="canonical" href="https://stevenwebber705174622.wordpress.com/2017/01/23/my-tech-journey/">
+<link rel="shortlink" href="https://wp.me/pddSDz-h">
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/?format=json&amp;url=https%3A%2F%2Fstevenwebber705174622.wordpress.com%2F2017%2F01%2F23%2Fmy-tech-journey%2F&amp;for=wpcom-auto-discovery"><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/?format=xml&amp;url=https%3A%2F%2Fstevenwebber705174622.wordpress.com%2F2017%2F01%2F23%2Fmy-tech-journey%2F&amp;for=wpcom-auto-discovery">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Setting up an Email Server">
+<meta property="og:url" content="https://stevenwebber705174622.wordpress.com/2017/01/23/my-tech-journey/">
+<meta property="og:description" content="Of all the infrastructure and software services needed to host an application, I find dealing with email the most troublesome.I’ve looked at mail providers like Zoho (good review here), but find th…">
+<meta property="article:published_time" content="2017-01-23T21:06:35+00:00">
+<meta property="article:modified_time" content="2017-01-23T21:06:35+00:00">
+<meta property="og:site_name" content="steven-webber">
+<meta property="og:image" content="https://s0.wp.com/i/blank.jpg">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:site" content="@wordpressdotcom">
+<meta name="twitter:text:title" content="Setting up an Email&nbsp;Server">
+<meta name="twitter:card" content="summary">
+<meta property="fb:app_id" content="249643311490">
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom">
+
+<!-- End Jetpack Open Graph Tags -->
+<link rel="shortcut icon" type="image/x-icon" href="https://s0.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="icon" type="image/x-icon" href="https://s0.wp.com/i/favicon.ico" sizes="16x16 24x24 32x32 48x48">
+<link rel="apple-touch-icon" href="https://s0.wp.com/i/webclip.png">
+<link rel="search" type="application/opensearchdescription+xml" href="https://stevenwebber705174622.wordpress.com/osd.xml" title="steven-webber">
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com">
+<link rel="pingback" href="https://stevenwebber705174622.wordpress.com/xmlrpc.php"><meta name="application-name" content="steven-webber"><meta name="msapplication-window" content="width=device-width;height=device-height"><meta name="msapplication-task" content="name=Subscribe;action-uri=https://stevenwebber705174622.wordpress.com/feed/;icon-uri=https://s0.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=Sign up for a free blog;action-uri=http://wordpress.com/signup/;icon-uri=https://s0.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Support;action-uri=http://support.wordpress.com/;icon-uri=https://s0.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=WordPress.com Forums;action-uri=http://forums.wordpress.com/;icon-uri=https://s0.wp.com/i/favicon.ico"><meta name="description" content="Of all the infrastructure and software services needed to host an application, I find dealing with email the most troublesome.I’ve looked at mail providers like Zoho (good review here), but find that they are either prohibitively expensive or have limitations on the amounts of email you can send per day/hour.So while they provide a great…">
+<link rel="amphtml" href="https://stevenwebber705174622.wordpress.com/2017/01/23/my-tech-journey/amp/"><style type="text/css" id="custom-colors-css">
+	:root,
+	#editor .editor-styles-wrapper {
+		--global--color-background: #ffffff;
+		--global--color-foreground: #1a1a1a;
+		--global--color-foreground-low-contrast: hsl( 0,0%,20.196078431373%);
+		--global--color-foreground-high-contrast: hsl( 0,0%,0.19607843137255%);
+		--global--color-primary: #000000;
+		--global--color-primary-hover: hsl( 0,0%,10%);
+		--global--color-secondary: #1a1a1a;
+		--global--color-secondary-hover: hsl( 0,0%,20.196078431373%);
+		--global--color-tertiary: #fafafa;
+	}
+
+	.global--color-background { background-color: #ffffff;}
+.global--color-foreground { color: #1a1a1a;}
+.global--color-primary { color: #000000;}
+.global--color-secondary { color: #1a1a1a;}
+.global--color-tertiary { color: #fafafa;}
+</style>
+<link rel="stylesheet" type="text/css" id="gravatar-card-css" href="steven-webber_files/hovercard.css"><link rel="stylesheet" type="text/css" id="gravatar-card-services-css" href="steven-webber_files/services.css"><link href="steven-webber_files/actionbar.css" type="text/css" rel="stylesheet"></head>
+
+<body class="post-template-default single single-post postid-17 single-format-standard wp-embed-responsive customizer-styles-applied hide-post-and-page-titles hide-site-footer hide-comments singular has-marketing-bar has-marketing-bar-theme-blank-canvas highlander-enabled highlander-light">
+<div id="page" class="site">
+	<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+
+
+	<div id="content" class="site-content">
+
+	<section id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+
+<article id="post-17" class="post-17 post type-post status-publish format-standard hentry category-uncategorized entry">
+
+
+	<div class="entry-content">
+		<p dir="auto">Of all the infrastructure and software services needed to host an application, I find dealing with email the most troublesome.</p>
+<p>I’ve looked at mail providers like <a href="http://www.zoho.com/" target="_blank" title="Zoho home" rel="noopener noreferrer">Zoho</a> (good <a href="https://www.lifewire.com/top-free-email-services-1171481" target="_blank" title="Zoho Livewire review" rel="noopener noreferrer">review here</a>), but find that they are either prohibitively expensive or have limitations on the amounts of email you can send per day/hour.</p>
+<p>So while they provide a great service for a email users, they aren’t
+really a match for an application that sends thousands of emails at a
+time.</p>
+<p>What I’ve used in the past to get around these limitations is a Web Hosting service with <a href="http://www.godaddy.com/" target="_blank" rel="noopener noreferrer">GoDaddy</a>.
+ This worked well, but given that my domain wasn’t actually hosted with
+them and that I had no intention of deploying a web app to the server or
+ using the database, it seemed a rather wastefull and overly complex
+solution.</p>
+<p>Now that the Web Hosting package is up for renewal, I thought I’d try creating a mail server instead.</p>
+<p>To achieve this I’m making use of the EC2 service in AWS. I’ve created a t2.micro instance running ubuntu 16.04 TLS.</p>
+<p>Onto that base I’ve installed iRedMail, a package of open source mail
+ software that takes the pain out of email configuration (Including all
+the editing of configuration files).  </p>
+<p>Let me explain that last a little more. I’ve used Linux in the past, I
+ can find my way around it enough to do the basics, but am no expert and
+ if I can avoid complex (for me) configurations, then I’m all for it.</p>
+<p>iRedMail will install Apache, setup an Admin console, a database (a
+few choices available, I’m using MySQL) and a web client for your mail.
+Additional items can be installed, but aren’t required.</p>
+<p>That all went quite well, but the AWS side needs a little more
+explaining. EC2 IPs are by default blocked for mail. The process is to
+then request these to be opened up. (Can take up to a week for the
+changes to filter through).</p>
+<p>Before you can go ahead and do this though you need an Elastic IP
+assigned to the new mail server. (Static public IP that survives server
+restarts). I also wanted a domain name for the email server to point at
+the new IP.</p>
+<p>Given that this mail server was supporting an application at a
+registed domain , I thought it best that the new domain name be a
+subdomain of that. </p>
+<p dir="ltr">That involved registering a hostedzone (Route 53) in AWS
+pointing at the Elastic IP (A record) and adding new NS records to the
+emmaphotozone domain to point the subdomain at the hostedzone names
+servers.</p>
+<p>I then made sure the firewall was open on AWS to the EC2 server at
+the correct ports for Apache and the mail servers and started to connect
+ and setup mail accounts.</p>
+<p>All went well for a while until all the ports refused connections
+with the exception of port 22 (ssh). I could find nothing to explain
+this. A server restart corrected the problem for a while and then it
+reverted to the blocked state again.</p>
+<p>The AWS team came back to my request to have my IP opened for email
+and suddently the ports no longer refused connections. Was this an AWS
+protection mechanism of some sort?</p>
+<p>I’m now waiting and hoping that the AWS change filters through as any
+ mails I send are currently never reaching there destination. Time will
+tell if this resolves itself.</p>
+<p>Once that’s done, I’ll be able to point my application server at the
+new mail server and send as many emails as required. Not only that, but
+I’ll be able to send and receive emails for multiple domains through
+this server. </p>
+<p>Oh, yes, one last thing. Once I’m happy that the server is stable and
+ the SMTP is really working, I’ll point the MX records for my domain at
+the new mail server and start receiving emails there as well.</p>
+
+</article><!-- #post-${ID} -->
+
+		</main><!-- #main -->
+	</section><!-- #primary -->
+
+
+	</div><!-- #content -->
+
+	<footer id="colophon" class="site-footer default-max-width" role="contentinfo" aria-label="Footer">
+
+	</footer><!-- #colophon -->
+
+</div><!-- #page -->
+
+<!--  -->
+<script id="wpgroho-js-extra">
+var WPGroHo = {"my_hash":""};
+</script>
+<script crossorigin="anonymous" type="text/javascript" src="steven-webber_files/wpgroho.js"></script>
+
+	<script>
+		// Initialize and attach hovercards to all gravatars
+		( function() {
+			function init() {
+				if ( typeof Gravatar === 'undefined' ) {
+					return;
+				}
+
+				if ( typeof Gravatar.init !== 'function' ) {
+					return;
+				}
+
+				Gravatar.profile_cb = function ( hash, id ) {
+					WPGroHo.syncProfileData( hash, id );
+				};
+
+				Gravatar.my_hash = WPGroHo.my_hash;
+				Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+			}
+
+			if ( document.readyState !== 'loading' ) {
+				init();
+			} else {
+				document.addEventListener( 'DOMContentLoaded', init );
+			}
+		} )();
+	</script>
+
+		<div style="display:none">
+	</div>
+<script id="highlander-comments-js-extra">
+var HighlanderComments = {"loggingInText":"Logging In\u2026","submittingText":"Posting Comment\u2026","postCommentText":"Post Comment","connectingToText":"Connecting to %s","commentingAsText":"%1$s: You are commenting using your %2$s account.","logoutText":"Log Out","loginText":"Log In","connectURL":"https:\/\/stevenwebber705174622.wordpress.com\/public.api\/connect\/?action=request","logoutURL":"https:\/\/stevenwebber705174622.wordpress.com\/wp-login.php?action=logout&_wpnonce=d4f26905b7","homeURL":"https:\/\/stevenwebber705174622.wordpress.com\/","postID":"17","gravDefault":"identicon","enterACommentError":"Please enter a comment","enterEmailError":"Please enter your email address here","invalidEmailError":"Invalid email address","enterAuthorError":"Please enter your name here","gravatarFromEmail":"This picture will show whenever you leave a comment. Click to customize it.","logInToExternalAccount":"Log in to use details from one of these accounts.","change":"Change","changeAccount":"Change Account","comment_registration":"0","userIsLoggedIn":"","isJetpack":"","text_direction":"ltr"};
+</script>
+<script crossorigin="anonymous" type="text/javascript" src="steven-webber_files/a_002"></script>
+
+<script>
+window.addEventListener( "load", function( event ) {
+	var link = document.createElement( "link" );
+	link.href = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.css?v=20201002";
+	link.type = "text/css";
+	link.rel = "stylesheet";
+	document.head.appendChild( link );
+
+	var script = document.createElement( "script" );
+	script.src = "https://s0.wp.com/wp-content/mu-plugins/actionbar/actionbar.js?v=20210707";
+	script.defer = true;
+	document.body.appendChild( script );
+} );
+</script>
+
+
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/stevenwebber705174622.wordpress.com\/2017\/01\/23\/my-tech-journey\/":17};
+	</script>
+				<script id="comment-like-js-extra">
+var comment_like_text = {"loading":"Loading..."};
+</script>
+<script id="sharing-js-js-extra">
+var sharing_js_options = {"lang":"en","counts":"1","is_stats_active":"1"};
+</script>
+<script async="true" src="steven-webber_files/a.js"></script><script crossorigin="anonymous" type="text/javascript" src="steven-webber_files/a"></script><div class="widget widget_eu_cookie_law_widget" style="display: block;">
+
+</div>
+<script type="text/javascript">
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-twitter' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-twitter' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+						return false;
+					}
+				} );
+			} )();
+var windowOpen;
+			( function () {
+				function matches( el, sel ) {
+					return !! (
+						el.matches && el.matches( sel ) ||
+						el.msMatchesSelector && el.msMatchesSelector( sel )
+					);
+				}
+
+				document.body.addEventListener( 'click', function ( event ) {
+					if ( ! event.target ) {
+						return;
+					}
+
+					var el;
+					if ( matches( event.target, 'a.share-facebook' ) ) {
+						el = event.target;
+					} else if ( event.target.parentNode && matches( event.target.parentNode, 'a.share-facebook' ) ) {
+						el = event.target.parentNode;
+					}
+
+					if ( el ) {
+						event.preventDefault();
+
+						// If there's another sharing window open, close it.
+						if ( typeof windowOpen !== 'undefined' ) {
+							windowOpen.close();
+						}
+						windowOpen = window.open( el.getAttribute( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+						return false;
+					}
+				} );
+			} )();
+</script>
+	<script>
+	/(trident|msie)/i.test(navigator.userAgent)&&document.getElementById&&window.addEventListener&&window.addEventListener("hashchange",function(){var t,e=location.hash.substring(1);/^[A-z0-9_-]+$/.test(e)&&(t=document.getElementById(e))&&(/^(?:a|select|input|button|textarea)$/i.test(t.tagName)||(t.tabIndex=-1),t.focus())},!1);
+	</script>
+	<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script>
+
+		<script src="steven-webber_files/w.js" defer="defer"></script> <script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'195400661','blog_tz':'2','user_lang':'en','blog_lang':'en','user_id':'0'}]);
+_stq.push(['view', {'blog':'195400661','v':'wpcom','tz':'2','user_id':'0','post':'17','subd':'stevenwebber705174622'}]);
+_stq.push(['extra', {'crypt':'UE40eW5QN0p8M2Y/RE1mJVY3bm9aR3VCbS9mWm1pRyZuJS1LX1t5QmRXZzE3RC9rQWZHK1FjbDltdWdaMVFFZTcxUGVHLWR0WTJoREFyeT1pTixVYjE5L0JVSlpIZys1eCt1SUhTQVlJR0FRNi5VOCVhQW49cD0mLjBmRkNHOHFQS2R1LmViaFpGREo/YVdOOFE9UXJsMmR6fGksS1d6fFYrOVVWQ2haMW84R25hJit1S2lGRUotXz0yVFpqd2hyNWoyfi1mYz1MP2YmaXlpTG9vVDJmTF8vOHJpZS4rcHRdbWp5RHZ+dTNvK19nfEJteFhhYUphVThvMn5TTDZCLXM0MDRUP0gvJl1PZ0h5emZJV2pLTi5seHlZbXNGVH5VTE9JYg=='}]);
+_stq.push([ 'clickTrackerInit', '195400661', '17' ]);
+	</script>
+<noscript><img src="https://pixel.wp.com/b.gif?v=noscript" style="height:1px;width:1px;overflow:hidden;position:absolute;bottom:1px;" alt="" /></noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+
+}
+</script>
+
+
+<img src="steven-webber_files/g.gif" alt=":)" id="wpstats"><div class="comment-likes-overlay" style="display: none;"></div><script src="steven-webber_files/actionbar.js" defer="defer"></script><div id="actionbar" class="actnbr-pub-blank-canvas actnbr-has-follow actnbr-hidden"><ul><li class="actnbr-btn actnbr-hidden"> 				<a class="actnbr-action actnbr-actn-follow" href=""><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a><a class="actnbr-action actnbr-actn-following no-display" href=""><svg class="gridicon gridicon__following" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 13.482L15.508 21 12 17.4l1.412-1.388 2.106 2.188 6.094-6.094L23 13.482zm-7.455 1.862L20 10.89V2H2v14c0 1.1.9 2 2 2h4.538l4.913-4.832 2.095 2.176zM8 13H4v-1h4v1zm3-2H4v-1h7v1zm0-2H4V8h7v1zm7-3H4V4h14v2z"></path></g></svg><span>Following</span></a> 				<div class="actnbr-popover tip tip-top-left actnbr-notice"> 					<div class="tip-arrow"></div> 					<div class="tip-inner actnbr-follow-bubble"> 				<ul> 					<li class="actnbr-sitename actnbr-hidden"><a href="http://stevenwebber705174622.wordpress.com/"><img alt="" src="steven-webber_files/wpcom-gray-white.png" class="avatar avatar-50" scale="0" width="50" height="50"> steven-webber</a></li> 					<form> 					<li class="actnbr-login-nudge actnbr-hidden"><div>Already have a WordPress.com account? <a href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fstevenwebber705174622.wordpress.com%2F2017%2F01%2F23%2Fmy-tech-journey%2F&amp;signup_flow=account">Log in now.</a></div></li> 				</form></ul> 			</div> 				</div> 					</li><li class="actnbr-ellipsis actnbr-hidden"> 				<svg class="gridicon gridicon__ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle></g></svg> 				<div class="actnbr-popover tip tip-top-left actnbr-more"> 				<div class="tip-arrow"></div> 				<div class="tip-inner"> 					<ul> 						<li class="actnbr-sitename actnbr-hidden"><a href="http://stevenwebber705174622.wordpress.com/"><img alt="" src="steven-webber_files/wpcom-gray-white.png" class="avatar avatar-50" scale="0" width="50" height="50"> steven-webber</a></li> 					<li class="actnbr-folded-customize actnbr-hidden"><a href="https://stevenwebber705174622.wordpress.com/wp-admin/customize.php?url=https%3A%2F%2Fstevenwebber705174622.wordpress.com%2F2017%2F01%2F23%2Fmy-tech-journey%2F"><svg class="gridicon gridicon__customize" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z" data-reactid=".2.1.1:0.1b.0"></path></g></svg><span>Customize<span></span></span></a></li> 						<li class="actnbr-folded-follow actnbr-hidden"><a class="actnbr-action actnbr-actn-follow" href=""><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Follow</span></a><a class="actnbr-action actnbr-actn-following no-display" href=""><svg class="gridicon gridicon__following" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 13.482L15.508 21 12 17.4l1.412-1.388 2.106 2.188 6.094-6.094L23 13.482zm-7.455 1.862L20 10.89V2H2v14c0 1.1.9 2 2 2h4.538l4.913-4.832 2.095 2.176zM8 13H4v-1h4v1zm3-2H4v-1h7v1zm0-2H4V8h7v1zm7-3H4V4h14v2z"></path></g></svg><span>Following</span></a></li> 					<li class="actnbr-signup actnbr-hidden"><a href="https://wordpress.com/start/">Sign up</a></li> 						<li class="actnbr-login actnbr-hidden"><a href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fstevenwebber705174622.wordpress.com%2F2017%2F01%2F23%2Fmy-tech-journey%2F&amp;signup_flow=account">Log in</a></li> 						 						<li class="actnbr-shortlink actnbr-hidden"><a href="https://wp.me/pddSDz-h">Copy shortlink</a></li> 						<li class="flb-report actnbr-hidden"><a href="http://en.wordpress.com/abuse/">Report this content</a></li> 						 						 						<li class="actnbr-subs actnbr-hidden"><a href="https://subscribe.wordpress.com/">Manage subscriptions</a></li> 						<li class="actnbr-fold actnbr-hidden"><a href="">Collapse this bar</a></li> 						</ul> 					</div> 					</div> 				</li> 				</ul></div></body></html>
