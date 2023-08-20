@@ -4,7 +4,7 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>What's using my POD Memory</title>
+        <title>What's using my POD's memory</title>
 
 	    <link rel="stylesheet" id="all-css-0-1" href="steven-webber_files/a_002.css" type="text/css" media="all">
 
@@ -65,7 +65,8 @@
 <p>For example (It also shows code, GC, compiler and other items using memory)</p>
 
 <pre>
-<code class="language-bash">Total: reserved=7106943KB, committed=4791151KB
+    <code class="language-bash">
+Total: reserved=7106943KB, committed=4791151KB
 
 Java Heap (reserved=3145728KB, committed=2097152KB)
      (mmap: reserved=3145728KB, committed=2097152KB)
@@ -74,7 +75,9 @@ Thread (reserved=2312368KB, committed=2312368KB)
      (thread #1122)
      (stack: reserved=2309260KB, committed=2309260KB)
      (malloc=1795KB #6747)
-     (arena=1313KB #2241)</code></pre>
+     (arena=1313KB #2241)
+    </code>
+</pre>
 
 <p>As you can see from the above, I found the culprit that was using so much memory outside of the heap. Over a thousand threads had been created and they were using over 2GB of memory.&nbsp;<br/>
     <br/>
