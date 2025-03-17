@@ -1,0 +1,15 @@
+{
+  "name": "htmx-blog",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "mkdir -p dist && cp -r src/* dist/",
+    "dev": "lite-server",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "htmx.org": "^2.0.4"
+  },
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}

@@ -1,0 +1,124 @@
+<div class="blog-container">
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="/posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+    <article class="full-post">
+        <h1>Java after January 2019</h1>
+        <div class="post-meta">
+            <span class="tag">Java</span>
+            <span class="tag">Azure</span>
+        </div>
+
+        <p>There have been a number of blogs and podcasts discussing Oracles
+            new Java release schedule and support model, but I thought I’d try
+            describe the concerns and options here in my own way and include my view
+            of the latest changes (as of this writing).</p>
+        <h4>Release Cadence.</h4>
+        <p>Oracle is releasing a new version of Java every 6 months, with a long term support version every 3 years.
+            Examples of this are</p>
+        <p>Java 9, September 2017</p>
+        <p>Java 10, March 2018</p>
+        <p>Java 11, September 2018 (LTS)</p>
+        <p>Java 12, March 2019</p>
+        <p>The LTS version means that Oracle will continue to provide patches
+            and security fixes to this version for a number of years. The exact
+            number of years depends on the support contract you purchase from
+            Oracle.</p>
+        <h4><strong>Support/Access to Security and Bug Fixes</strong><strong>&nbsp;</strong></h4>
+        <p>There are some items that we should unpack with regard to the above.
+            Firstly, an LTS version doesn’t mean you’ll get Long Term Support. What
+            it does mean is that you’ll get long term support if you purchase a
+            support contract. What I’ve heard promoted a lot with regard to this is
+            that in order to stay in a supported version (one for which you can get
+            security fixes and patches) without a support contract, you’d need to
+            upgrade to the new version of Java every 6 months.</p>
+        <p>This presupposes that Oracle provides public access to fixes for each
+            Java release for 6 months. You’d use the latest version of Java for six
+            months while the public support is available, then move to the next
+            version when it’s released and get 6 months of public fixes on that
+            version.</p>
+        <p>One issue with the above approach is the practicality of it. Just how
+            reasonable is it so assume you can successfully migrate and test all
+            your applications on the new version of Java every six months?</p>
+        <p>Another issue, and one I haven’t seen mentioned at all, is Oracles
+            new license terms, starting with Java 11. This prevents any commercial
+            use of Java 11. So while you will have access to Java 11 public releases
+            for 6 months, you may not use them in production.</p>
+        <p>An extract from the new Oracle Java License agreement :</p>
+        <p>“<strong>License Rights and Restrictions</strong><br>
+            Oracle grants You a nonexclusive, nontransferable, limited license to
+            internally use the Programs, subject to the restrictions stated in this
+            Agreement and Program Documentation, only for the purpose of developing,
+            testing, prototyping and demonstrating Your Application and not for any
+            other purpose.&nbsp;“</p>
+        <p><a href="https://www.oracle.com/technetwork/java/javase/terms/license/javase-license.html">https://www.oracle.com/technetwork/java/javase/terms/license/javase-license.html</a>
+        </p>
+        <p>In my mind this completely invalidates any attempt to use Oracles
+            Java in a prod environment without first purchasing a support agreement,
+            even if you do intend to upgrade to the latest Java every 6 months.</p>
+        <h4><strong>Okay, what about Java 8?</strong></h4>
+        <p>Java 8 currently still has patches and security fixes made available
+            publicly. So, for the moment you can continue to use Java 8 and download
+            the latest updates without a support agreement.</p>
+        <p>As of January next year though (2019), this falls away. While the
+            updates will most likely still be available for download after January,
+            you may not use those in a production environment without a support
+            contract with Oracle.</p>
+        <h4><strong>All that means?</strong></h4>
+        <p>For Production/Commercial use, without a support contract:</p>
+        <ul>
+            <li>To use Java 8 after January is okay, if you don’t upgrade/download
+                any patch releases after January. (You’ll have no support for fixing
+                security vulnerabilities and bugs.)
+            </li>
+            <li>Using Java 11 is not possible.</li>
+            <li>Java 12…? Depends what license applies… If it’s the Java 11 license, then no, not an option.</li>
+        </ul>
+        <h4><strong>Alternatives?</strong></h4>
+        <p>OpenJDK is, as of Java 11, virtually identical to the Oracle Java 11.
+            Oracle have either bundled the previously commercial tools supplied
+            with Oracle Java into OpenJDK or removed them from both the OpenJDK and
+            Oracle JDK. This applies to other items to, like WebStart (removed) and
+            JavaFX (moved to an open source project OpenJFX). Oracle even pushes
+            changes/fixes through OpenJDK before bundling them into Oracles builds
+            of the JDK.</p>
+        <p>OpenJDK however needs you to build the binaries. Not something
+            everybody is setup to do. Thankfully a number of companies are providing
+            binaries of the OpenJDK.</p>
+        <p>Zulu from Azul systems provide tested and certified builds, available for commercial use and you can purchase
+            support. &nbsp;<a href="https://www.azul.com/downloads/zulu/">https://www.azul.com/downloads/zulu/</a></p>
+        <p>AdoptOpenJDK provides binaries of Java 8 and Java 11. <a href="https://adoptopenjdk.net/">https://adoptopenjdk.net</a>
+        </p>
+        <h4><strong>Security Fixes/Patches for OpenJDK?</strong></h4>
+        <p>Okay, so we’ve moved away from Oracle Java to OpenJDK. We have a
+            binary package we can consume. Now though, do we have ongoing support
+            for bug and security fixes?</p>
+        <p>Oracle won’t apply security and bug fixes to the OpenJDK after the
+            public support period for a release ends. That means that after 6
+            months, Oracle will not apply any fixes it may release in its commercial
+            offering to the OpenJDK project.</p>
+        <p>Vendors like Azul, will apply these fixes back to their binary
+            distributions, but again, possibly only to customers who have a support
+            contract with them.</p>
+        <p>The open source community for OpenJDK will, most likely apply patches
+            and security fixes to OpenJDK LTS versions (so beyond the 6 months).
+            This will however be at the pace and priority set by the community.</p>
+        <p>My hope is that OpenJDK will become the mainstream Java version and
+            will receive the attention it needs to ensure it has a long term support
+            model that delivers patches and security fixes in a manner that
+            supports its commercial use with no more risk than we currently have
+            with the Oracle releases.</p>
+
+    </article>
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="/posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+</div>

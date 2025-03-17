@@ -1,0 +1,74 @@
+<div class="blog-container">
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="/posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+    <article class="full-post">
+        <h1>New Blog Hosting service – Lightsail</h1>
+        <div class="post-meta">
+            <span class="tag">Hosting</span>
+            <span class="tag">Lightsail</span>
+        </div>
+
+        <div>
+            <p>I’ve been using WordPress’s online and free, for the first tier, blogging site (wordpress.com) as the
+                host for my blog.</p>
+
+            <p>This proved really easy to get going and adding content and
+                publishing it was a breeze. Once I’d created a few entries though, I
+                wanted to get a bit more professional with the blog and this included a
+                domain name that wasn’t WordPress related. I could did this by changing
+                my WordPress tier. The starting point was $4 dollars a month, billed
+                annually. This would have removed advertising and given me a free domain
+                name.</p>
+
+
+            <p>Since I was looking at paying now, I thought I’d try different
+                options. The first one I considered was using AWS S3. S3 is an object
+                storing service that can be used to host a static web site. It’s also
+                really cheap. The blocker here was that I’d have to create this static
+                content first, then upload it. One option was to use a local copy of
+                WordPress to build my content, then extract that into static pages and
+                upload those. Not a super solution.</p>
+
+
+            <p>Okay, so why not use AWS EC2 then? AWS marketplace contains a AMI
+                image for WordPress. Just a few clicks and I’d have an instance running
+                with WordPress installed. AWS offers a t2-micro instance for free for
+                the first year. This would be plenty for the WordPress image. After that
+                first year though, the instance becomes $9 a month. That’s unless I
+                reserve the instance and pay upfront, in which case you can save quite a
+                bundle. I also have to decide how much HDD space I need, try and work
+                out if the network traffic into the site will add to the cost. Maybe
+                another way..</p>
+
+
+            <p>Enter AWS Lightsail. Lightsail creates a level of abstraction above
+                EC2. You answer 4 questions and you have a WordPress site up and
+                running. Passwords and logins are supplied. A browser based console to
+                ssh to the server is provided (if you’d rather not configure your own
+                ssh client). </p>
+
+
+            <p>The cost, for the entry level site, $3.5 a month, with the first
+                month free. Now I have complete control over my site, a small monthly
+                cost, the ability to register my own domain (a quick pop over to AWS
+                Route 53) and my first new entry posted. All in one evening. </p>
+
+
+            <p>I can also upgrade at any point to a larger Lightsail instance or
+                migrate to an EC2 version of the site. No long term commitment either.</p>
+
+        </div>
+    </article>
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="/posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+</div>
