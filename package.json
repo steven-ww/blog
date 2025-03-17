@@ -2,7 +2,7 @@
   "name": "htmx-blog",
   "version": "1.0.0",
   "scripts": {
-    "build": "mkdir -p dist && cp -r src/* dist/",
+    "build": "mkdir -p dist && cp -r *.html *.css assets dist/ && cp -r node_modules/htmx.org/dist/htmx.min.js dist/",
     "dev": "lite-server",
     "start": "npm run dev"
   },
