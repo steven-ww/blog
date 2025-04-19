@@ -32,7 +32,7 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           aws-access-key-id: ${{ secrets.AWS_DEPLOY_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_DEPLOY_SECRET }}
-      - name: Debug Deploy
+      - name: Deploy to S3
         run: |
           aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET }} --delete
 
