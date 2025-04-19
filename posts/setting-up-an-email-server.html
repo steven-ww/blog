@@ -1,0 +1,88 @@
+<div class="blog-container">
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="./posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+    <article class="full-post">
+        <h1>Setting up an Email Server</h1>
+        <div class="post-meta">
+            <span class="tag">Hosting</span>
+            <span class="tag">Lightsail</span>
+        </div>
+
+        <p dir="auto">Of all the infrastructure and software services needed to host an application, I find dealing with
+            email the most troublesome.</p>
+        <p>I’ve looked at mail providers like <a href="http://www.zoho.com/" target="_blank" title="Zoho home"
+                                                 rel="noopener noreferrer">Zoho</a> (good <a
+                href="https://www.lifewire.com/top-free-email-services-1171481" target="_blank"
+                title="Zoho Livewire review" rel="noopener noreferrer">review here</a>), but find that they are either
+            prohibitively expensive or have limitations on the amounts of email you can send per day/hour.</p>
+        <p>So while they provide a great service for a email users, they aren’t
+            really a match for an application that sends thousands of emails at a
+            time.</p>
+        <p>What I’ve used in the past to get around these limitations is a Web Hosting service with <a
+                href="http://www.godaddy.com/" target="_blank" rel="noopener noreferrer">GoDaddy</a>.
+            This worked well, but given that my domain wasn’t actually hosted with
+            them and that I had no intention of deploying a web app to the server or
+            using the database, it seemed a rather wastefull and overly complex
+            solution.</p>
+        <p>Now that the Web Hosting package is up for renewal, I thought I’d try creating a mail server instead.</p>
+        <p>To achieve this I’m making use of the EC2 service in AWS. I’ve created a t2.micro instance running ubuntu
+            16.04 TLS.</p>
+        <p>Onto that base I’ve installed iRedMail, a package of open source mail
+            software that takes the pain out of email configuration (Including all
+            the editing of configuration files). </p>
+        <p>Let me explain that last a little more. I’ve used Linux in the past, I
+            can find my way around it enough to do the basics, but am no expert and
+            if I can avoid complex (for me) configurations, then I’m all for it.</p>
+        <p>iRedMail will install Apache, setup an Admin console, a database (a
+            few choices available, I’m using MySQL) and a web client for your mail.
+            Additional items can be installed, but aren’t required.</p>
+        <p>That all went quite well, but the AWS side needs a little more
+            explaining. EC2 IPs are by default blocked for mail. The process is to
+            then request these to be opened up. (Can take up to a week for the
+            changes to filter through).</p>
+        <p>Before you can go ahead and do this though you need an Elastic IP
+            assigned to the new mail server. (Static public IP that survives server
+            restarts). I also wanted a domain name for the email server to point at
+            the new IP.</p>
+        <p>Given that this mail server was supporting an application at a
+            registed domain , I thought it best that the new domain name be a
+            subdomain of that. </p>
+        <p dir="ltr">That involved registering a hostedzone (Route 53) in AWS
+            pointing at the Elastic IP (A record) and adding new NS records to the
+            emmaphotozone domain to point the subdomain at the hostedzone names
+            servers.</p>
+        <p>I then made sure the firewall was open on AWS to the EC2 server at
+            the correct ports for Apache and the mail servers and started to connect
+            and setup mail accounts.</p>
+        <p>All went well for a while until all the ports refused connections
+            with the exception of port 22 (ssh). I could find nothing to explain
+            this. A server restart corrected the problem for a while and then it
+            reverted to the blocked state again.</p>
+        <p>The AWS team came back to my request to have my IP opened for email
+            and suddently the ports no longer refused connections. Was this an AWS
+            protection mechanism of some sort?</p>
+        <p>I’m now waiting and hoping that the AWS change filters through as any
+            mails I send are currently never reaching there destination. Time will
+            tell if this resolves itself.</p>
+        <p>Once that’s done, I’ll be able to point my application server at the
+            new mail server and send as many emails as required. Not only that, but
+            I’ll be able to send and receive emails for multiple domains through
+            this server. </p>
+        <p>Oh, yes, one last thing. Once I’m happy that the server is stable and
+            the SMTP is really working, I’ll point the MX records for my domain at
+            the new mail server and start receiving emails there as well.</p>
+
+    </article>
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="./posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+</div>
