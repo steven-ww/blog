@@ -78,22 +78,25 @@ The project uses HTMX for dynamic content loading. Key features:
 4. Add necessary HTMX attributes for dynamic loading in both files
 
 Note: The `featured.html` file serves as an index/listing for your blog posts. Each new post must be added here to appear in the featured posts section on the main page.
+
 ## Deployment
 
-### Current Status
-The project is configured for deployment to AWS S3. Deployment setup is pending.
+### Infrastructure Overview
+The project is successfully deployed using AWS S3 with CloudFront CDN integration. The site is served securely over HTTPS through CloudFront using a custom domain configuration. Automated deployments are handled through a CI/CD pipeline.
 
-### Planned Deployment Steps
-1. Create an S3 bucket for static website hosting
-2. Configure bucket policy for public access
-3. Set up CloudFront distribution (optional, for CDN)
-4. Configure CI/CD pipeline for automated deployments
+### Deployment Architecture
+The following components have been implemented:
+1. AWS S3 bucket configured for website content hosting
+2. CloudFront distribution with Origin Access Identity (OAI) for secure S3 access
+3. Bucket policy restricting access to CloudFront only
+4. CI/CD pipeline for automated deployments
 
-### Future Deployment Tasks
-- [X] Configure S3 bucket
-- [X] Set up domain and DNS
-- [ ] Implement deployment automation
-- [X] Configure HTTPS with CloudFront
+### Implementation Details
+- **Storage**: AWS S3 bucket with private access, serving content exclusively through CloudFront
+- **Domain Management**: Custom domain successfully configured with proper DNS settings
+- **Security**: HTTPS enabled and content served securely through CloudFront with no direct public S3 access
+- **Content Delivery**: CloudFront CDN configured for optimal global performance and secure content delivery
+- **Automation**: CI/CD pipeline automatically deploys updates to production 
 
 ## Contributing
 
