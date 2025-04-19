@@ -35,3 +35,9 @@ jobs:
       - name: Debug Deploy
         run: |
           aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET }} --delete
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+          --distribution-id ${{ secrets.AWS_CF_ID_BLOG }} \
+          --paths "/*" "/posts/*.html"
