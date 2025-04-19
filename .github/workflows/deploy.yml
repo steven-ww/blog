@@ -34,12 +34,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_DEPLOY_SECRET }}
       - name: Debug Deploy
         run: |
-          # Check if dist exists and show contents
-          ls -la ./dist
-          
-          # Test basic S3 commands
-          aws s3 ls
-          aws s3 ls s3://${{ secrets.AWS_S3_BUCKET }}
-          
-          # Try sync with debug flag
-          aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET }} --delete --debug
+          aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET }} --delete
