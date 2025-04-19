@@ -1,0 +1,349 @@
+<div class="blog-container">
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="./posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+    <article class="full-post">
+        <h1>Setting up an Email Server</h1>
+        <div class="post-meta">
+            <span class="tag">Quarkus</span>
+            <span class="tag">Lambda</span>
+            <span class="tag">AWS SES</span>
+        </div>
+
+        <p>Until recently, we’ve been running an email server on an EC2 instance. I’ve replaced this with the <a
+                href="https://aws.amazon.com/ses/">Amazon Simple Email Service</a>.
+            Our Glashfish application now uses SES to send emails. Receiving emails
+            is still a problem though, as the best we could do with SES at the
+            moment is have it deliver those emails to an S3 bucket.</p>
+
+
+        <p>This blog is about how to use Quarkus to build a native binary that
+            runs as an AWS Lambda, triggered via “mails” arriving in S3, to fetch
+            the data from S3 and send that email payload on to email addresses.</p>
+
+
+        <h2>Why Quarkus though?</h2>
+
+
+        <p><a href="https://quarkus.io/">Quarkus</a> is a Java framework that
+            supports an ever growing list of libraries, with a key focus on the
+            developer experience. Key for me is its support for <a href="https://microprofile.io/">MicroProfile</a>,
+            the ability to containerise my application, and the fantastic capability to use <a
+                    href="https://www.graalvm.org/">GraalVM</a> to build a native binary.</p>
+
+
+        <p>We’ll be using Quarkus with CDI and the AWS SDK’s to build and deploy a native binary to AWS Lambda</p>
+
+
+        <h2>Getting started</h2>
+
+
+        <p>Quarkus has a number of ways to get you going quickly. I use maven as
+            my build tool, so I’ll be showing that here. However, Quarkus also
+            supports Gradle.</p>
+
+
+        <p>To get your basic project up and running you can either generate it via the <a
+                href="https://code.quarkus.io/">code.quarkus.io</a>
+            website, which gives you a graphical way to build your pom and download
+            the resulting project files, or you can run maven locally using a
+            quarkus archetype.</p>
+
+
+        <pre class="wp-block-code"><code>mvn archetype:generate \
+       -DarchetypeGroupId=io.quarkus \
+       -DarchetypeArtifactId=quarkus-amazon-lambda-archetype \
+       -DarchetypeVersion=1.6.1.Final</code></pre>
+
+
+        <p>This will step you through the process of generating a maven project.
+            For a complete step by step guide to setting up your Lambda, testing
+            and deploying it to AWS have a look at the <a href="https://quarkus.io/guides/amazon-lambda">Quarkus
+                Lambda guide</a></p>
+
+
+        <p>I’m using AWS CodeCommit and CodeBuild for my CI/CD pipeline, however I have placed the code in <a
+                href="https://github.com/StevenWebber/email-lambda">GitHub</a> for your reference.</p>
+
+
+        <h2>The Lambda</h2>
+
+
+        <p>I used the RequestStreamHandler interface for the Lambda function and
+            immediately delegate the processing logic to a CDI bean called
+            ProcessingService.</p>
+
+
+        <p>This bean is injected into the Lambda using CDI.</p>
+
+
+        <pre class="wp-block-code"><code>public class StreamLambda implements RequestStreamHandler {
+
+    @Inject
+    ProcessingService service;
+
+    @Override
+    public void handleRequest(
+                InputStream inputStream,
+                OutputStream outputStream,
+                Context context
+            ) throws IOException {
+
+        service.process(inputStream);
+
+    }
+}</code></pre>
+
+
+        <p>The basic frameworks for both the <em>RequestStreamHandler</em> and the <em>RequestHandler</em> would
+            have been generated for you by the quarkus archetype.</p>
+
+
+        <h2>Processing Service – Reading the Event</h2>
+
+
+        <p>The ProcessingService reads the bucket name and object key from the
+            event received and uses that to pull down the “email” object from S3. A
+            snippet of the code below : </p>
+
+
+        <pre>
+            <code>    public String process(InputStream input, Context context) {
+        LambdaLogger logger = context.getLogger();
+        try {
+            JsonReader jsonReader = Json.createReader(input);
+            JsonObject jobj = jsonReader.readObject();
+
+            logger.log(jobj.toString());
+
+            JsonArray records = jobj.getJsonArray("Records");
+            for (int i = 0; i &lt; records.size(); i++) {
+                JsonObject record = records.getJsonObject(i);
+                JsonObject s3 = record.getJsonObject("s3");
+                JsonObject bucket = s3.getJsonObject("bucket");
+                JsonObject object = s3.getJsonObject("object");
+                ByteArrayOutputStream baos = getObject(bucket.getString("name"), object.getString("key"));
+                emailService.sendEmail(baos, context);
+            }
+
+        } catch (Exception ex) {
+            </code>
+        </pre>
+
+
+        <h2>Retrieve the Email Object</h2>
+
+
+        <p>This method simply makes a request to S3 to retrieve the email raw data as stored in the S3 bucket.</p>
+
+
+        <pre>
+            <code> private ByteArrayOutputStream getObject(String bucket, String key) {
+
+        // Create a GetObject request
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucket)
+                .key(key)
+                .build();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        GetObjectResponse objectResponse =s3.getObject(getObjectRequest, ResponseTransformer.toOutputStream(baos));
+
+        return baos;
+    }
+            </code>
+        </pre>
+
+
+        <h2>Sending the email</h2>
+
+
+        <p>The logic for sending the email is in a separate service
+            (EmailService). This was injected into the ProcessingService using CDI.</p>
+
+
+        <pre>
+        <code>@Inject
+EmailService emailService;</code>
+        </pre>
+
+        <p>Quarkus has a grand guide to setting up and <a href="https://quarkus.io/guides/amazon-ses">using SES</a>.
+            What we need to do now though is parse the raw email message that we
+            fetched above, remove the extra headers and manipulate the <em>To</em> and <em>From</em> headers so that
+            the email is sent from a verified SES domain and to our new email destination/s.</p>
+
+
+        <p>I’m injecting the email addresses using Microprofile config. The
+            values are read from the properties file in the src/main/resources
+            folder called application.properties</p>
+
+
+        <pre class="wp-block-code"><code> @ConfigProperty(name = "mail.from")
+ String from;
+
+ @ConfigProperty(name = "mail.to")
+ String to;</code></pre>
+
+
+        <p>The SES Client is also injected</p>
+
+
+        <pre><code>@Inject
+SesClient ses;</code></pre>
+
+
+        <p class="has-text-align-left">And now we parse the email, make our modifications and send it out.</p>
+
+
+        <pre class="wp-block-code"><code>public String sendEmail(ByteArrayOutputStream baos, Context context) {
+        LambdaLogger logger = context.getLogger();
+        try {
+
+            String rawString = new String(baos.toByteArray());
+
+            // Remove the Return-Path header.
+            String pattern = "^Return-Path:[\\t ]?(.*)\\r?\\n";
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(rawString);
+            rawString = m.replaceAll("");
+
+            // Remove Sender header.
+            pattern = "^sender:[\\t ]?(.*)\\r?\\n";
+            r = Pattern.compile(pattern, Pattern.MULTILINE);
+            m = r.matcher(rawString);
+            rawString = m.replaceAll("");
+
+            // Remove Message-ID header.
+            pattern = "^Message-ID:[\\t ]?(.*)\\r?\\n";
+            r = Pattern.compile(pattern, Pattern.MULTILINE);
+            m = r.matcher(rawString);
+            rawString = m.replaceAll("");
+
+            // Remove all DKIM-Signature headers
+            pattern = "^DKIM-Signature:[\\t ]?.*\\r?\\n(\\s+.*\\r?\\n)*";
+            r = Pattern.compile(pattern, Pattern.MULTILINE);
+            m = r.matcher(rawString);
+            rawString = m.replaceAll("");
+
+            pattern = "^X-SES-DKIM-SIGNATURE:[\\t ]?.*\\r?\\n(\\s+.*\\r?\\n)*";
+            r = Pattern.compile(pattern, Pattern.MULTILINE);
+            m = r.matcher(rawString);
+            rawString = m.replaceAll("");
+
+            pattern = "^X-SES-RECEIPT:[\\t ]?.*\\r?\\n(\\s+.*\\r?\\n)*";
+            r = Pattern.compile(pattern, Pattern.MULTILINE);
+            m = r.matcher(rawString);
+            rawString = m.replaceAll("");
+
+            // SES does not allow sending messages from an unverified address,
+            // so replace the message's "From:" header with the injected address
+            // This must be on the verified domain.
+            pattern = "^From:[\\t ]?(.*(?:\\r?\\n\\s+.*)*)";
+            r = Pattern.compile(pattern, Pattern.MULTILINE);
+            m = r.matcher(rawString);
+            rawString = m.replaceAll("From: " + from);
+
+            // Replace original 'To' header with a manually defined one
+            pattern = "^To:[\\t ]?.*\\r?\\n(\\s+.*\\r?\\n)*";
+            r = Pattern.compile(pattern, Pattern.MULTILINE);
+            m = r.matcher(rawString);
+            rawString = m.replaceAll("To:" + to + "\r\n");
+
+            RawMessage rawMessage =    RawMessage.builder()
+                     .data(SdkBytes.fromUtf8String(rawString))
+                     .build();
+
+            SendRawEmailRequest sendRawEmailRequest = SendRawEmailRequest.builder()
+                    .rawMessage(rawMessage)
+                    .build();
+
+            ses.sendRawEmail(sendRawEmailRequest);
+        } </code></pre>
+
+
+        <h2>Deploying the Lambda</h2>
+
+
+        <p>Now that we have the Lambda ready to accept S3 Events and sending the
+            contents of the S3 objecets on as Email, we need to deploy the Lambda
+            to our AWS account and configure it to receive events from the bucket.</p>
+
+
+        <p>I experienced an issue with the org.glassfish.json.JsonProviderImpl default constructor not being found
+            in the native image.</p>
+
+
+        <p>To make sure Quarkus makes this class available in the native image
+            you can create a json config file as per below and add the following to
+            the application properties file </p>
+
+
+        <pre class="wp-block-code"><code>quarkus.native.additional-build-args =-H:ReflectionConfigurationFiles=reflection-config.json</code></pre>
+
+
+        <pre class="wp-block-code"><code>[
+  {
+    "name" : "org.glassfish.json.JsonProviderImpl",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allPublicMethods" : true,
+    "allDeclaredFields" : true,
+    "allPublicFields" : true
+  }
+]</code></pre>
+
+
+        <p>I’m building this on macOS, so I’m using docker to create the native binary with the following command
+            : </p>
+
+
+        <pre class="wp-block-code"><code>./mvnw clean package -Pnative -Dnative-image.docker-build=true</code></pre>
+
+
+        <p>Once the build completes (and this can take a while), you can use the Quarkus provided script to upload
+            your Lambda. </p>
+
+
+        <p>After you ensure that you’ve installed the AWS cli, created an <a
+                href="https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-awscli.html">execution role</a>
+            for your Lambda, set the a variable as follows (With the ARN of your role)</p>
+
+
+        <pre class="wp-block-code"><code>export LAMBDA_ROLE_ARN="arn:aws:iam::1234567890:role/lambda-role"</code></pre>
+
+
+        <p>Now you can use the script to deploy your Lambda.</p>
+
+
+        <pre class="wp-block-code"><code>sh target/manage.sh native create</code></pre>
+
+
+        <h2>Configure the Lambda</h2>
+
+
+        <p>Once our code has been deployed, what remains is too ensure that we
+            add a trigger to the lambda that would fire every time a file arrives in
+            the S3 Bucket.</p>
+
+
+        <p>We can do this quite simply from the console by logging in an
+            navigating to the Lambda service in AWS. Select you Lambda, select add
+            trigger, then from the drop down select S3.</p>
+
+
+        <p>Select the bucket the SES will deliver your email messages to, select “all object create events” and
+            enable the trigger. </p>
+    </article>
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="./posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+</div>

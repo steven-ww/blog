@@ -1,0 +1,105 @@
+<div class="blog-container">
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="./posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+    <article class="full-post">
+        <h1>Setting up an Email Server</h1>
+        <div class="post-meta">
+            <span class="tag">Java</span>
+            <span class="tag">jcmd</span>
+        </div>
+
+        <p>Java memory utilization and settings when running in Kubernetes/Containers has come a long way in the recent
+            versions of Java.</p>
+
+        <p>The <em>MaxRAMPercentage</em> option is one that is of particular note as it allows you to configure the
+            percentage of the available container/pod memory that the Java heap can use. That allows you to scale
+            up/down your pod memory without requiring changes to your JVM options to make use of the memory.<br/>
+            <br/>
+            Without any JVM options specified, the Heap will use no more than 25% of the available memory.</p>
+
+        <h3>The Problem</h3>
+
+
+        <p>Given that, it was strange to me that one of the services I&#39;m working with at the moment was using a lot
+            more memory than the 25% default. (No JVM options for memory were specified)</p>
+
+        <p>In this case, 4GB was allocated to the pod, which means the heap could be no bigger than 1GB and yet the
+            memory use on the pod as reported by K8s was often over 3GB.
+            <br/>
+            <br/>
+            My first instinct was to give the JVM more of the available memory, so I set the <em>MaxRAMPercentage</em>
+            to 75%.&nbsp; It wasn&#39;t long before this ended up in an Out Of Memory error in K8s and a restart of the
+            pod...
+        </p>
+
+        <p>Okay, so giving more of the available memory to the heap caused the pod to exceed its 4GB limit. There was no
+            other process running in the container, but surely the JVM itself couldn&#39;t be using 2GB of non-heap
+            memory?
+            <br/>
+            <br/>
+            Logging the non-heap memory as reported by the&nbsp; API MemoryMXBean showed only 200K being used by
+            non-heap processes. So what K8s was reporting still didn&#39;t add up.
+        </p>
+
+        <h3>The Solution&nbsp;</h3>
+
+        <p><br/>
+            That&#39;s when I discovered java&#39;s&nbsp;<span><em>Native Memory Tracking</em> capability. By starting the JVM with the&nbsp;<em>-XX:NativeMemoryTracking=summary</em> option and then using jcmd (ships with the jdk) to run&nbsp; </span>
+        </p>
+
+        <pre>
+    <code class="language-bash">jcmd &lt;pid&gt; VM.native_memory summary</code>
+</pre>
+
+        <p>you can get a great view of the native memory being used by your Java process.&nbsp;</p>
+
+        <p>For example (It also shows code, GC, compiler and other items using memory)</p>
+
+        <pre>
+    <code class="language-bash">
+Total: reserved=7106943KB, committed=4791151KB
+
+Java Heap (reserved=3145728KB, committed=2097152KB)
+     (mmap: reserved=3145728KB, committed=2097152KB)
+
+Thread (reserved=2312368KB, committed=2312368KB)
+     (thread #1122)
+     (stack: reserved=2309260KB, committed=2309260KB)
+     (malloc=1795KB #6747)
+     (arena=1313KB #2241)
+    </code>
+</pre>
+
+        <p>As you can see from the above, I found the culprit that was using so much memory outside of the heap. Over a
+            thousand threads had been created and they were using over 2GB of memory.&nbsp;<br/>
+            <br/>
+            So I finally had a true view of what memory my Java service was using and how that was being measured by
+            K8s.&nbsp;<br/>
+            <br/>
+            The Java Native Memory tracker can also give you a more detailed view of which methods are using the most
+            memory. Use the same options and commands as above, just replace <em>summary</em> with <em>detail</em>.
+        </p>
+
+        <p>You can also use it to track down memory leaks by first getting a baseline of the application after a warmup
+            and then running a diff against that baseline.</p>
+
+        <p>Oracle has a good description on the&nbsp;<a
+                href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html"
+                target="_blank" rel='noopener'>Native memory Tracking</a>&nbsp;page.</p>
+
+
+    </article>
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="./posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+</div>
+

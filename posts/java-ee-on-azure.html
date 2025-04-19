@@ -1,0 +1,53 @@
+<div class="blog-container">
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="./posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+    <article class="full-post">
+        <h1>Java EE on Azure</h1>
+        <div class="post-meta">
+            <span class="tag">Java</span>
+            <span class="tag">Azure</span>
+        </div>
+        <p>I’ve just spent some time with Microsoft Azure and their <a
+                href="https://azure.microsoft.com/en-us/services/app-service/">App Service</a>.</p>
+        <p>This gives you the ability to deploy to a provisioned environment, in
+            this case, Tomcat or Wildfly (but others like Java SE, Nodejs and PHP
+            are supported).</p>
+        <p>What this service allows you to do, is with nothing more than a maven
+            POM file and an Azure plugin, deploy your WAR or EAR to an environment
+            that’s spun up for you as you deploy.</p>
+        <p>No need to create a virtual server and install WildFly.</p>
+        <p>Also, the certificate and domain are handled for you. Changeable of course, but quick to get running and
+            testing.</p>
+        <p>To configure the container, e.g. add a datasource, you can provide a
+            script to be executed. In my case that script simply executed some
+            WildFly CLI commands to create a Postgres datasource and point at the
+            postgres jdbc driver.</p>
+        <p>Behind the scenes a virtual server is being created with a number of docker containers and an external
+            volume.</p>
+        <p>The volume allows for a persistent space where your startup script
+            and jar files are placed (Basically anything in the /home directory is
+            on this volume.)</p>
+        <p>Containers are then provisioned which allows you to interact with this volume via ftp or ssh.</p>
+        <p>Containers are also spun up to provision your WildFly server/s against which your scripts are run.</p>
+        <p>All in all a great way to get started quickly, automate the
+            provisioning and configuration of your environment and deployment of
+            your code.</p>
+        <p>Definitely worth having a look at.</p>
+        <p>Some <a href="https://github.com/Azure-Samples/migrate-Java-EE-app-to-azure">examples</a> of how to get up
+            and running.<br>
+            <a href="https://github.com/azure-samples/migrate-java-ee-app-to-azure#trouble-shoot-petstore-on-azure-by-viewing-logs">Stream
+                your log</a> files to your local dev PC.</p>
+    </article>
+    <div class="blog-nav">
+        <a href="#"
+           hx-get="./posts/featured.html"
+           hx-target="#content"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+</div>
