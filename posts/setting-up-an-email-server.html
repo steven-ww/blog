@@ -1,10 +1,9 @@
 <div class="blog-container">
-    <div class="blog-nav">
-        <a href="#"
-           hx-get="./posts/featured.html"
-           hx-target="#content"
-           class="back-to-posts">← Back to Posts</a>
-    </div>
+    <a href="./featured.html"
+       hx-get="./featured.html"
+       hx-target="#content"
+       hx-push-url="true"
+       class="back-to-posts">← Back to Posts</a>
 
     <article class="full-post">
         <h1>Setting up an Email Server</h1>
@@ -27,7 +26,7 @@
                 href="http://www.godaddy.com/" target="_blank" rel="noopener noreferrer">GoDaddy</a>.
             This worked well, but given that my domain wasn’t actually hosted with
             them and that I had no intention of deploying a web app to the server or
-            using the database, it seemed a rather wastefull and overly complex
+            using the database, it seemed a rather wasteful and overly complex
             solution.</p>
         <p>Now that the Web Hosting package is up for renewal, I thought I’d try creating a mail server instead.</p>
         <p>To achieve this I’m making use of the EC2 service in AWS. I’ve created a t2.micro instance running ubuntu
@@ -50,7 +49,7 @@
             restarts). I also wanted a domain name for the email server to point at
             the new IP.</p>
         <p>Given that this mail server was supporting an application at a
-            registed domain , I thought it best that the new domain name be a
+            registed domain, I thought it best that the new domain name be a
             subdomain of that. </p>
         <p dir="ltr">That involved registering a hostedzone (Route 53) in AWS
             pointing at the Elastic IP (A record) and adding new NS records to the
@@ -61,13 +60,13 @@
             and setup mail accounts.</p>
         <p>All went well for a while until all the ports refused connections
             with the exception of port 22 (ssh). I could find nothing to explain
-            this. A server restart corrected the problem for a while and then it
+            this. A server restart corrected the problem for a while, and then it
             reverted to the blocked state again.</p>
         <p>The AWS team came back to my request to have my IP opened for email
-            and suddently the ports no longer refused connections. Was this an AWS
+            and suddenly the ports no longer refused connections. Was this an AWS
             protection mechanism of some sort?</p>
         <p>I’m now waiting and hoping that the AWS change filters through as any
-            mails I send are currently never reaching there destination. Time will
+            mails I send are currently never reaching their destination. Time will
             tell if this resolves itself.</p>
         <p>Once that’s done, I’ll be able to point my application server at the
             new mail server and send as many emails as required. Not only that, but
@@ -78,11 +77,10 @@
             the new mail server and start receiving emails there as well.</p>
 
     </article>
-    <div class="blog-nav">
-        <a href="#"
-           hx-get="./posts/featured.html"
-           hx-target="#content"
-           class="back-to-posts">← Back to Posts</a>
-    </div>
+    <a href="./featured.html"
+       hx-get="./featured.html"
+       hx-target="#content"
+       hx-push-url="true"
+       class="back-to-posts">← Back to Posts</a>
 
 </div>
