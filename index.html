@@ -24,6 +24,102 @@
 	gtag('config', 'G-8Q9DRSBZRC');
 </script>
 <script>
+ // Track page views when htmx content is loaded
+ document.addEventListener('htmx:afterSwap', function(event) {
+ 	// Get the current URL including query parameters
+ 	const currentUrl = window.location.href;
+
+ 	// Send page view to Google Analytics
+ 	gtag('config', 'G-8Q9DRSBZRC', {
+ 		'page_path': window.location.pathname + window.location.search
+ 	});
+
+ 	// Track article view as an event if this is an article page
+ 	const params = new URLSearchParams(window.location.search);
+ 	const article = params.get('article');
+ 	if (article) {
+ 		gtag('event', 'view_article', {
+ 			'article_name': article
+ 		});
+ 		console.log('Google Analytics article view event sent for:', article);
+ 	}
+
+ 	console.log('Google Analytics page view sent for:', currentUrl);
+ });
+
+ // Track clicks on any HTMX navigation links (both article links and back-to-posts links)
+ document.addEventListener('click', function(event) {
+ 	// Check if the clicked element is a "Read Post" button or is inside one
+ 	let readMoreTarget = event.target.closest('.read-more');
+
+ 	// Special handling for "Read Post" buttons
+ 	if (readMoreTarget && readMoreTarget.getAttribute('hx-get') && readMoreTarget.getAttribute('hx-push-url')) {
+ 		const hxGet = readMoreTarget.getAttribute('hx-get');
+ 		const hxPushUrl = readMoreTarget.getAttribute('hx-push-url');
+
+ 		// Extract article name from the URL
+ 		const params = new URLSearchParams(hxPushUrl);
+ 		const article = params.get('article');
+
+ 		if (article) {
+ 			// Send page view to Google Analytics for article page
+ 			gtag('config', 'G-8Q9DRSBZRC', {
+ 				'page_path': window.location.pathname + hxPushUrl
+ 			});
+
+ 			// Track article view as an event
+ 			gtag('event', 'view_article', {
+ 				'article_name': article
+ 			});
+
+ 			console.log('Google Analytics events sent for Read Post button click:', article);
+ 			return; // Exit early to avoid duplicate tracking
+ 		}
+ 	}
+
+ 	// Continue with general link handling if not a Read Post button
+ 	const target = event.target.closest('a[hx-get][hx-push-url]');
+ 	if (!target || !target.getAttribute('hx-get')) {
+ 		return;
+ 	}
+
+ 	const hxGet = target.getAttribute('hx-get');
+ 	const hxPushUrl = target.getAttribute('hx-push-url');
+
+ 	// Handle article links (from featured.html to an article)
+ 	if (hxGet.includes('/posts/') && hxGet.endsWith('.html') && !hxGet.includes('featured.html')) {
+ 		const params = new URLSearchParams(hxPushUrl);
+ 		const article = params.get('article');
+
+ 		if (article) {
+ 			// Send page view to Google Analytics for article page
+ 			gtag('config', 'G-8Q9DRSBZRC', {
+ 				'page_path': window.location.pathname + hxPushUrl
+ 			});
+
+ 			// Track article view as an event
+ 			gtag('event', 'view_article', {
+ 				'article_name': article
+ 			});
+
+ 			console.log('Google Analytics events sent on article link click for:', article);
+ 		}
+ 	} 
+ 	// Handle back-to-posts links (from an article to featured.html)
+ 	else if (hxGet.includes('featured.html')) {
+ 		// Send page view to Google Analytics for featured page
+ 		gtag('config', 'G-8Q9DRSBZRC', {
+ 			'page_path': window.location.pathname + (hxPushUrl || '')
+ 		});
+
+ 		// Track navigation back to featured page
+ 		gtag('event', 'view_featured_page');
+
+ 		console.log('Google Analytics events sent on back-to-posts link click');
+ 	}
+ });
+</script>
+<script>
 	document.addEventListener('DOMContentLoaded', function() {
 		const params = new URLSearchParams(window.location.search);
 		const article = params.get('article');
@@ -36,10 +132,26 @@
 		// If we're on a specific article page
 		if (article) {
 			// Load the article content
-			htmx.ajax('GET', "/posts/"+article+".html", '#content');
+			htmx.ajax('GET', "/posts/"+article+".html", '#content').then(function() {
+				// Send page view to Google Analytics for initial article load
+				gtag('config', 'G-8Q9DRSBZRC', {
+					'page_path': window.location.pathname + window.location.search
+				});
+				// Track article view as an event
+				gtag('event', 'view_article', {
+					'article_name': article
+				});
+				console.log('Google Analytics page view and article event sent for initial article load:', window.location.href);
+			});
 		} else {
 			// Load the featured content for the home page
-			htmx.ajax('GET', '/posts/featured.html', '#content');
+			htmx.ajax('GET', '/posts/featured.html', '#content').then(function() {
+				// Send page view to Google Analytics for initial featured content load
+				gtag('config', 'G-8Q9DRSBZRC', {
+					'page_path': window.location.pathname + window.location.search
+				});
+				console.log('Google Analytics page view sent for initial featured load:', window.location.href);
+			});
 		}
 	});
 </script>
@@ -85,16 +197,6 @@
 		</div>
 	</section>
 </nav>
-
-<!--		<main>-->
-<!--			<div id="content"-->
-<!--				 hx-get="./posts/featured.html"-->
-<!--				 hx-trigger="load"-->
-<!--				 hx-push-url="true"-->
-<!--				 hx-swap="innerHTML">-->
-<!--				Loading featured content...-->
-<!--			</div>-->
-<!--		</main>-->
 
 		<main>
 			<div id="content">
