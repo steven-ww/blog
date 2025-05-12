@@ -23,6 +23,27 @@
 
 	gtag('config', 'G-8Q9DRSBZRC');
 </script>
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		const params = new URLSearchParams(window.location.search);
+		const article = params.get('article');
+
+		const content = document.getElementById('content');
+
+		// Remove any initial load behavior
+		content.removeAttribute('hx-trigger');
+
+		// If we're on a specific article page
+		if (article) {
+			// Load the article content
+			htmx.ajax('GET', "/posts/"+article+".html", '#content');
+		} else {
+			// Load the featured content for the home page
+			htmx.ajax('GET', '/posts/featured.html', '#content');
+		}
+	});
+</script>
+
 <body>
 <nav>
 	<section class="intro-section">
@@ -65,13 +86,19 @@
 	</section>
 </nav>
 
+<!--		<main>-->
+<!--			<div id="content"-->
+<!--				 hx-get="./posts/featured.html"-->
+<!--				 hx-trigger="load"-->
+<!--				 hx-push-url="true"-->
+<!--				 hx-swap="innerHTML">-->
+<!--				Loading featured content...-->
+<!--			</div>-->
+<!--		</main>-->
+
 		<main>
-			<div id="content"
-				 hx-get="./posts/featured.html"
-				 hx-trigger="load"
-				 hx-push-url="true"
-				 hx-swap="innerHTML">
-				Loading featured content...
+			<div id="content">
+				Loading content...
 			</div>
 		</main>
 
