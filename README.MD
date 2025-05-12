@@ -42,11 +42,11 @@ This will start lite-server and open your default browser to `http://localhost:3
 
 ## Project Structure
 ```
-├── assets/ # Images and other static assets 
-├── posts/ # Blog post HTML files 
-├── index.html # Main entry point 
-├── style.css # Global styles 
-├── about.html # About page 
+├── assets/ # Images and other static assets
+├── posts/ # Blog post HTML files
+├── index.html # Main entry point
+├── style.css # Global styles
+├── about.html # About page
 └── package.json # Project configuration and dependencies
 ```
 
@@ -69,9 +69,9 @@ The project uses HTMX for dynamic content loading. Key features:
        <div class="post-excerpt">
            Brief excerpt from your post
        </div>
-       <a href="#" 
-          hx-get="/posts/my-new-post.html" 
-          hx-target="#content" 
+       <a href="#"
+          hx-get="/posts/my-new-post.html"
+          hx-target="#content"
           class="read-more">Read More</a>
    </article>
    ```
@@ -96,7 +96,7 @@ The following components have been implemented:
 - **Domain Management**: Custom domain successfully configured with proper DNS settings
 - **Security**: HTTPS enabled and content served securely through CloudFront with no direct public S3 access
 - **Content Delivery**: CloudFront CDN configured for optimal global performance and secure content delivery
-- **Automation**: CI/CD pipeline automatically deploys updates to production 
+- **Automation**: CI/CD pipeline automatically deploys updates to production
 
 ## Contributing
 
@@ -108,6 +108,6 @@ The following components have been implemented:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
