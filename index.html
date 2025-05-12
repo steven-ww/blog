@@ -65,13 +65,15 @@
 	</section>
 </nav>
 
-<main>
-	<div id="content"
-		 hx-get="./posts/featured.html"
-		 hx-trigger="load"
-		 hx-swap="innerHTML">
-		Loading featured content...
-	</div>
-</main>
-</body>
+		<main>
+			<div id="content"
+				 hx-get="./posts/featured.html"
+				 hx-trigger="load"
+				 hx-push-url="true"
+				 hx-swap="innerHTML">
+				Loading featured content...
+			</div>
+		</main>
+
+	</body>
 </html>
