@@ -11,6 +11,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # run the actionlinter, will fail on errors
+      - uses: devops-actions/actionlint@v0.1.9
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -33,16 +36,3 @@ jobs:
           name: blog-package
           path: blog-dist.tar.gz
           retention-days: 5
-
-      # Optional: Add a release step if you want to create releases
-      - name: Create Release
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: blog-dist.tar.gz
-          tag_name: v${{ github.run_number }}
-          name: Release ${{ github.run_number }}
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
