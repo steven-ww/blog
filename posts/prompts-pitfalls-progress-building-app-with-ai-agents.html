@@ -1,0 +1,160 @@
+<div class="blog-container">
+    <div class="blog-nav">
+        <a href="/posts/featured.html"
+           hx-get="/posts/featured.html"
+           hx-target="#content"
+           hx-push-url="/"
+           class="back-to-posts">← Back to Posts</a>
+    </div>
+
+
+    <article class="full-post">
+        <h1>Prompts, Pitfalls, and Progress: What I Learned Building an App with AI Agents</h1>
+        <div class="post-meta">
+            <span class="tag">AI</span>
+            <span class="tag">Development</span>
+            <span class="tag">BDD</span>
+            <span class="tag">Automation</span>
+        </div>
+
+        <p>Over the past week, I set out to test a hypothesis: Could I build a reasonably complex application using only AI Agents and behavior-driven development (BDD), without writing a single line of code myself? The goal wasn't just about automation — it was about understanding how effective and collaborative AI development environments really are.</p>
+
+        <p>This blog isn't about what I built — you can have look at that using the links at the end of the blog — it's about what I learned along the way.</p>
+
+        <h2>The Setup: My Experiment</h2>
+
+        <h3>Hypothesis:</h3>
+        <p>I can build a complete application — including backend APIs, a React frontend, and CI/CD pipelines — using AI agents by:</p>
+      <p>
+        <ul>
+            <li>Driving development via BDD feature files</li>
+            <li>Not writing any code myself</li>
+            <li>Focusing on outcomes, not implementation</li>
+            <li>Reviewing and refining what the agent produces</li>
+            <li>Enforcing quality through linting and tests</li>
+        </ul>
+      </p>
+
+        <h3>Tech stack:</h3>
+        <p>
+          <ul>
+             <li>Backend: Java, Quarkus (native builds), Cucumber, deployed to AWS EC2</li>
+             <li>Frontend: React, TypeScript, BDD with cucumber, deployed to AWS S3</li>
+             <li>CI/CD: GitHub Actions with linting, testing, and deployment</li>
+          </ul>
+        </p>
+
+        <h2>The Agents I Used</h2>
+        <p>I started with <a href="https://www.jetbrains.com/junie/" target="_blank" rel="noopener">Junie</a>, moved to <a href="https://www.warp.dev" target="_blank" rel="noopener">Warp</a>, and occasionally used <a href="https://aws.amazon.com/q/developer/" target="_blank" rel="noopener">Amazon Q</a>. Each brought its own strengths and limitations. Warp's "agentic" workflow stood out for its collaborative, review-first approach, while Junie was great and nicely integrated with the IDE, although I ended up preferring the workflow from the terminal as offered by Warp and Amazon Q. Amazon Q was functional but struggled with prompt context size and lacked rich control over changes.</p>
+
+        <p>I used the agents all day, every day for just over a week. Something to note if working with agents in that way is the even the paid subscriptions aren't enough. You need the higher tier offerings or you will run out of credits/tokens/requests very quickly.</p>
+
+        <h2>What I Learned</h2>
+
+        <h3>1. You're Not Out of the Loop — Unless You Choose to Be</h3>
+        <p>While it's possible to let an AI do everything, I learned that active involvement is key. Agents can:</p>
+        <ul>
+            <li>Misinterpret requirements</li>
+            <li>Undo working code</li>
+            <li>Introduce side effects or regressions</li>
+            <li>Miss subtle design intent</li>
+        </ul>
+        <p>The most successful work came when I reviewed each change, refined prompts, and treated the process like pair programming, not delegation.</p>
+
+        <h3>2. Guidelines Matter — But Agents May Ignore Them</h3>
+        <p>Despite setting up a .junie/guidelines.md with explicit instructions (like always updating prompts.txt), agents often ignored them or followed them inconsistently. I had to:</p>
+        <ul>
+            <li>Reiterate key rules</li>
+            <li>Evolve the guidelines structure over time</li>
+            <li>Build "check your work" steps into each task</li>
+        </ul>
+        <p><strong>Lesson:</strong> Don't just write guidelines — monitor and enforce them.</p>
+
+        <h3>3. Context is Fragile</h3>
+        <p>Agents struggle as project complexity grows:</p>
+        <ul>
+            <li>Features introduced early conflict with new ones</li>
+            <li>Changing a test can break others unexpectedly</li>
+            <li>Large prompts often lead to loops or partial implementations</li>
+        </ul>
+        <p>The longer the session, the harder it became to maintain context. Saving and restoring context (manually or via prompts files) became critical.</p>
+
+        <h3>4. BDD Is a Great Fit — But Not a Silver Bullet</h3>
+        <p>Using BDD helped me frame outcomes clearly. It allowed the agent to:</p>
+        <ul>
+            <li>Understand expectations</li>
+            <li>Validate implementation with real tests</li>
+            <li>Keep development focused on behavior</li>
+        </ul>
+        <p>But I also saw:</p>
+        <ul>
+            <li>Tests that passed but didn't reflect the intended logic</li>
+            <li>New APIs added that allowed "cheating" in tests (e.g., placing robots directly)</li>
+            <li>Test flakiness from randomness (robot/wall placement)</li>
+        </ul>
+        <p>BDD is powerful — but only if the test design is intentional and precise.</p>
+
+        <h3>5. Warp's Workflow Was a Game Changer</h3>
+        <p>Warp's approach of showing each proposed change with reasoning was the closest thing to working with a human teammate:</p>
+        <ul>
+            <li>I could review before applying</li>
+            <li>See why changes were made</li>
+            <li>Refine prompts without restarting</li>
+        </ul>
+        <p>This dramatically improved trust and control — especially compared to agents that "just do stuff" without showing their thinking.</p>
+
+        <h3>6. Human Creativity Still Has a Role</h3>
+        <p>As much as I loved seeing features come to life without writing code, I began to miss creative problem-solving. Prompting all day started to feel more like coordination than development.</p>
+        <p>Questions arose:</p>
+        <ul>
+            <li>Am I just a prompter now?</li>
+            <li>Where's the joy of architecting a system?</li>
+            <li>Is reviewing AI output enough to call this "development"?</li>
+        </ul>
+        <p>The answer might be yes in some cases — but for me, the balance of human insight and AI generation is where the magic lies.</p>
+
+        <h2>Final Thoughts</h2>
+
+        <h3>What I Achieved in Just Over a Week:</h3>
+        <ul>
+            <li>A working backend and frontend app with real features</li>
+            <li>CI/CD pipelines deploying to AWS (S3, EC2)</li>
+            <li>All features driven by BDD</li>
+            <li>Fully documented APIs (Swagger)</li>
+            <li>README files and developer scripts</li>
+            <li>A demo project with real-time interaction</li>
+        </ul>
+
+        <p><strong>Could I have done this alone in a week?</strong><br>
+        No.</p>
+
+        <p><strong>Was it perfect?</strong><br>
+        Not even close.</p>
+
+        <p><strong>Was it a powerful collaboration?</strong><br>
+        Absolutely.</p>
+
+        <h2>Advice to Others Exploring AI Agents</h2>
+        <ul>
+            <li>Set clear guidelines, and make sure they're enforced.</li>
+            <li>Review everything — trust, but verify.</li>
+            <li>Be patient — iterative work pays off.</li>
+            <li>Expect surprises, and build in time for debugging.</li>
+            <li>Use agents as collaborators, not magicians.</li>
+        </ul>
+
+        <h2>About the App</h2>
+        <p>The app is an API based game that allows users to control a robot in a battle against other robots. If anyone feels like building a robot and battling it against others, please go ahead. I'd love to hear about it and all the bugs you found 😊</p>
+
+        <p>The Git Repo with all three projects (Backend, Frontend and robo-demo) is available here. The repo includes all the prompts I used. It's the only file I've manually updated as the Agents didn't always update it or update it correctly.</p>
+
+        <p>The production version of the App is available at <a href="https://ui.rwars.steven-webber.com" target="_blank" rel="noopener">https://ui.rwars.steven-webber.com</a></p>
+
+    </article>
+    <a href="/posts/featured.html"
+       hx-get="/posts/featured.html"
+       hx-target="#content"
+       hx-push-url="/"
+       class="back-to-posts">← Back to Posts</a>
+
+</div>
